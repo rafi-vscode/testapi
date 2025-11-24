@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Input Data</title>
+</head>
+<body>
+  <h1>Kirim Data ke Laptop</h1>
+
+  <input id="nama" placeholder="Masukkan nama" />
+  <button onclick="kirim()">Kirim</button>
+
+  <p id="status"></p>
+
+  <script>
+    const API_URL = "http://192.168.1.8:3000"; // ganti IP laptop kamu
+
+    async function kirim() {
+      const nama = document.getElementById("nama").value;
+      if (!nama) return alert("Nama wajib diisi");
+
+      try {
+        const res = await fetch(API_URL + "/data", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nama })
+        });
+
+        const data = await res.json();
+        document.getElementById("status").innerText = data.message;
+      } catch (err) {
+        alert("Gagal mengirim: " + err);
+      }
+    }
+  </script>
+</body>
+</html>
