@@ -1,36 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Input Data</title>
+  <title>Test API LAN</title>
 </head>
 <body>
-  <h1>Kirim Data ke Laptop</h1>
 
-  <input id="nama" placeholder="Masukkan nama" />
-  <button onclick="kirim()">Kirim</button>
+<h2>Kirim Pesan ke Server Laptop</h2>
+<input id="msg" placeholder="Isi pesan">
+<button onclick="send()">Kirim</button>
 
-  <p id="status"></p>
+<p id="status"></p>
 
-  <script>
-    const API_URL = "http://192.168.1.8:3000"; // ganti IP laptop kamu
+<script>
+async function send() {
+  const text = document.getElementById("msg").value;
 
-    async function kirim() {
-      const nama = document.getElementById("nama").value;
-      if (!nama) return alert("Nama wajib diisi");
+  const res = await fetch("http://192.168.1.4:3000/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: text })
+  });
 
-      try {
-        const res = await fetch(API_URL + "/data", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nama })
-        });
+  document.getElementById("status").innerText = "Terkirim!";
+}
+</script>
 
-        const data = await res.json();
-        document.getElementById("status").innerText = data.message;
-      } catch (err) {
-        alert("Gagal mengirim: " + err);
-      }
-    }
-  </script>
 </body>
 </html>

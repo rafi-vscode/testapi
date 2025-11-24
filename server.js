@@ -1,28 +1,23 @@
-const express = require("express");
-const cors = require("cors");
+const express = require('express')
+const cors = require('cors')
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+const app = express()
+app.use(cors())
+app.use(express.json())
 
-let dataMasuk = []; // tempat data disimpan
+let messages = []
 
-// GET untuk menampilkan semua data
-app.get("/data", (req, res) => {
-  res.json(dataMasuk);
-});
+app.post('/send', (req, res) => {
+  messages.push(req.body)
+  console.log("Data masuk:", req.body)
+  res.json({ success: true })
+})
 
-// POST untuk menambah data
-app.post("/data", (req, res) => {
-  const { nama } = req.body;
-  if (!nama) return res.status(400).json({ message: "Nama wajib diisi" });
+app.get('/messages', (req, res) => {
+  res.json(messages)
+})
 
-  dataMasuk.push({ nama, waktu: new Date().toLocaleString() });
-
-  console.log("Data diterima:", nama);
-  res.json({ message: "Data berhasil masuk", nama });
-});
-
-app.listen(3000, "0.0.0.0", () => {
-  console.log("Server berjalan di http://0.0.0.0:3000");
-});
+const PORT = 3000
+app.listen(PORT, '0.0.0.0', () => {
+  console.log('Server berjalan di port', PORT)
+})

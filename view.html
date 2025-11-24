@@ -8,22 +8,21 @@
   <ul id="list"></ul>
 
   <script>
-    const API_URL = "http://192.168.1.8:3000"; // IP laptop
+    const API_URL = "http://192.168.1.4:3000";
 
     async function ambilData() {
-      const res = await fetch(API_URL + "/data");
+      const res = await fetch(API_URL + "/messages");
       const data = await res.json();
 
       const list = document.getElementById("list");
       list.innerHTML = "";
       data.forEach(item => {
         const li = document.createElement("li");
-        li.textContent = `${item.nama} (${item.waktu})`;
+        li.textContent = JSON.stringify(item);
         list.appendChild(li);
       });
     }
 
-    // auto refresh setiap 1 detik
     setInterval(ambilData, 1000);
   </script>
 </body>
